@@ -1,0 +1,9 @@
+node_modules
+dist
+.superpowers
+
+# Local-only: internal test sweeps and planning docs (not part of the submission)
+examples/edge-cases.sh
+examples/robustness.sh
+examples/lib.sh
+docs/superpowers/

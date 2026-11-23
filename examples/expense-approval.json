@@ -1,0 +1,66 @@
+{
+  "name": "Expense approval",
+  "startTaskId": "request",
+  "tasks": [
+    {
+      "id": "request",
+      "type": "data_entry",
+      "steps": [
+        {
+          "id": "basics",
+          "fields": [
+            { "key": "amount", "type": "number", "label": "Amount", "required": true },
+            {
+              "key": "category",
+              "type": "single_select",
+              "label": "Category",
+              "required": true,
+              "options": ["travel", "meals", "equipment"]
+            }
+          ]
+        },
+        {
+          "id": "details",
+          "fields": [
+            { "key": "reason", "type": "text", "label": "Reason", "required": true },
+            { "key": "tags", "type": "multi_select", "label": "Tags", "options": ["urgent", "client", "internal"] }
+          ]
+        }
+      ],
+      "next": "route"
+    },
+    {
+      "id": "route",
+      "type": "branch",
+      "rules": [
+        {
+          "when": { "all": [{ "field": "request.amount", "op": "gt", "value": 500 }] },
+          "next": "manager_review"
+        }
+      ],
+      "default": "auto_approved"
+    },
+    {
+      "id": "manager_review",
+      "type": "data_entry",
+      "steps": [
+        {
+          "id": "review",
+          "fields": [
+            {
+              "key": "decision",
+              "type": "single_select",
+              "label": "Decision",
+              "required": true,
+              "options": ["approve", "reject"]
+            },
+            { "key": "comment", "type": "text", "label": "Comment" }
+          ]
+        }
+      ],
+      "next": "approved_end"
+    },
+    { "id": "auto_approved", "type": "end" },
+    { "id": "approved_end", "type": "end" }
+  ]
+}
